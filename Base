@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cookie Clicker</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      background-color: #fceabb;
+      margin: 0;
+      padding: 2rem;
+    }
+    #cookie {
+      width: 200px;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    #cookie:active {
+      transform: scale(0.95);
+    }
+    .counter {
+      font-size: 2rem;
+      margin: 1rem 0;
+    }
+    .upgrade {
+      margin: 1rem auto;
+      padding: 1rem;
+      background-color: #fff8dc;
+      border: 2px solid #d2691e;
+      width: 200px;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+    .upgrade:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cookie Clicker 🍪</h1>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/7/74/Cookie.png" alt="Cookie" id="cookie" />
+  <div class="counter">Cookies: <span id="score">0</span></div>
+  <button class="upgrade" id="grandma">Buy Grandma (Cost: 50)</button>
+
+  <script>
+    let cookies = 0;
+    let grandmas = 0;
+    let grandmaCost = 50;
+
+    const scoreDisplay = document.getElementById('score');
+    const cookie = document.getElementById('cookie');
+    const grandmaButton = document.getElementById('grandma');
+
+    cookie.addEventListener('click', () => {
+      cookies += 1 + grandmas; // each grandma adds +1 per click
+      updateDisplay();
+    });
+
+    grandmaButton.addEventListener('click', () => {
+      if (cookies >= grandmaCost) {
+        cookies -= grandmaCost;
+        grandmas++;
+        grandmaCost = Math.floor(grandmaCost * 1.5);
+        grandmaButton.textContent = `Buy Grandma (Cost: ${grandmaCost})`;
+        updateDisplay();
+      }
+    });
+
+    function updateDisplay() {
+      scoreDisplay.textContent = cookies;
+      grandmaButton.disabled = cookies < grandmaCost;
+    }
+
+    // Passive cookie generation from grandmas every second
+    setInterval(() => {
+      cookies += grandmas;
+      updateDisplay();
+    }, 1000);
+  </script>
+</body>
+</html>
